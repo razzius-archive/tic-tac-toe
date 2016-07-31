@@ -1,0 +1,32 @@
+
+
+td{
+  margin-left: auto;
+  margin-right: auto;
+  background-color: green;
+  height: 30px;
+  width: 30px;
+  /*min-height: 100px;*/
+}
+table{
+	background-color: orange;
+	height: 100%;
+ 	width: 100%;
+}
+
+/* Extra small devices (phones, less than 768px) */
+/* No media query since this is the default in Bootstrap */
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) { 
+ }
