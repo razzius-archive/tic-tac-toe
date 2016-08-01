@@ -1,22 +1,26 @@
+/*
+window.addEventListener("load", function load(event){
+    window.removeEventListener("load", load, false); //remove listener, no longer needed
+    myExtension.init();  
+},false)
+*/
+
 window.onload = function () {
   let gameOver = 1
   let board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
   let currentPlayer = 'X'
   let winningCombos = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 4, 8], [2, 4, 6], [0, 3, 6], [1, 4, 7], [2, 5, 8]]
   let mode = 'human'
-  let table = document.getElementsByTagName('TD')
+  let table = Array.from(document.getElementsByTagName('TD'))
 
   let button = document.getElementById('mode')
   button.addEventListener('click', toggleMode)
 
   document.getElementById('restart').addEventListener('click', initializeVariables)
 
-  for (let i = 0; i < board.length; i++) { // rewrite this with add event listener and use a map function, not for loop
-    table[i].onclick = function (event) {
-      boardStatus(event.target)
-    // figure out typeof and how to use an iterable for this and the other function
-    }
-  }
+  table.forEach(function (element) {
+    element.addEventListener('click', function () { boardStatus(element) }, false)
+  })
 
   function toggleMode () {
     if (button.innerHTML === 'Fight Skynet') {
@@ -32,7 +36,7 @@ window.onload = function () {
     gameOver = 1
     board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
     currentPlayer = 'X'
-    table.forEach(function (element) {table[element].innerHTML = ''})
+    table.forEach(function (element) {element.innerHTML = ''})
   }
 
   function squareOpen (square) {
@@ -76,8 +80,6 @@ window.onload = function () {
   }
 
   function boardStatus (boardSquare) {
-    console.log(boardSquare)
-    console.log(boardSquare.id)
     if (gameOver === 1) {
       if (squareOpen(boardSquare)) {
         takeSquare(boardSquare)
