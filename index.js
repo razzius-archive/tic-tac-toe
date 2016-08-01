@@ -3,6 +3,7 @@ window.onload = function () {
   let board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
   let currentPlayer = 'X'
   let mode = 'human'
+  let gameOver = 1
   let table = document.getElementsByTagName('TD')
 
   let button = document.getElementById('mode')
@@ -36,7 +37,7 @@ window.onload = function () {
   }
 
   function takeSquare (boardSquare) {
-    board[boardSqaure.id] = currentPlayer
+    board[boardSqaure.id] = currentPlayer // problem child
     boardSquare.innerHTML = currentPlayer
     if (currentPlayer === 'X') { currentPlayer = 'O'} else {currentPlayer = 'X'}
   }
@@ -47,27 +48,33 @@ window.onload = function () {
   }
   function gameStatus () {
     for (let i = 0; i < winningCombos.length; i++) {
-      if (board[winningCombos[i][0]] == board[winningCombos[i][1]] == board[winningCombos[i][2]]) {
+      if (board[winningCombos[i][0]] === board[winningCombos[i][1]] && board[winningCombos[i][0]] === board[winningCombos[i][2]]) {
+        if (board[winningCombos[i][0]] === 0) {break}
+        else if (board[winningCombos[i][0]] === 'X') {
+          alert('X wins')
+          gameOver = 0
+        }
+        else (board[winningCombos[i][0]] === 'O')
+        {
+        alert('O wins')
+        gameOver = 0
+
+        }
       }
     }
-    // use && instead of == maybe
-    // compare each three int array as index on the board to eachother and see if any are == 0
-    // if so break here
-    // then compare them to each other and see if they are the same
-    // if they are the same determine the person who has won and break the entire function 
-    // also end the ability to onclick= may need another variable for end of game
-    // otherwise cycle through the array of arrays
-
+    if (!board.some(k => k === 0)) {
+      alert('tie')
+      gameOver = 0
+    }
   }
 
   function boardStatus (boardSquare) {
-    if (squareOpen(boardSquare)) {
-      takeSquare(boardSquare)
+    if (gameOver === 1) {
+      if (squareOpen(boardSquare)) {
+        takeSquare(boardSquare)
+      }
+      gameStatus()
+      if (mode === 'skynet') { skynet()}
     }
-    gameStatus()
-    if (mode === 'skynet') { skynet()}
   }
-
-// loop to add onclick handlers  I want to tie the dom elements to their class and status in the game without so many calls
-// to get ElementID and whatever, look at people who did not use canvas and see what they did
 }
