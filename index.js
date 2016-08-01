@@ -1,13 +1,24 @@
 window.onload = function () {
-  let winningCombos = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 4, 8], [2, 4, 6], [0, 3, 6], [1, 4, 7], [2, 5, 8]]
+  let gameOver = 1
   let board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
   let currentPlayer = 'X'
+  let winningCombos = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 4, 8], [2, 4, 6], [0, 3, 6], [1, 4, 7], [2, 5, 8]]
   let mode = 'human'
-  let gameOver = 1
   let table = document.getElementsByTagName('TD')
 
   let button = document.getElementById('mode')
-  button.onclick = function toggleMode () {
+  button.addEventListener('click', toggleMode)
+
+  document.getElementById('restart').addEventListener('click', initializeVariables)
+
+  for (let i = 0; i < board.length; i++) { // rewrite this with add event listener and use a map function, not for loop
+    table[i].onclick = function (event) {
+      boardStatus(event.target)
+    // figure out typeof and how to use an iterable for this and the other function
+    }
+  }
+
+  function toggleMode () {
     if (button.innerHTML === 'Fight Skynet') {
       mode = 'skynet'
       button.innerHTML = 'Fight Human'
@@ -17,27 +28,20 @@ window.onload = function () {
     }
   }
 
-  function restartGame () {
-    document.getElementById('restart').onclick = function () {
-      initializeGame()
-    }
+  function initializeVariables () {
+    gameOver = 1
+    board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    currentPlayer = 'X'
+    table.forEach(function (element) {table[element].innerHTML = ''})
   }
 
-  function initializeGame () {
-  }
-
-  for (let i = 0; i < board.length; i++) {
-    table[i].onclick = function (event) {
-      boardStatus(event.target)
-    }
-  }
   function squareOpen (square) {
     if (board[square.id] === 0) {return true}
     return false
   }
 
   function takeSquare (boardSquare) {
-    board[boardSqaure.id] = currentPlayer // problem child
+    board[boardSquare.id] = currentPlayer
     boardSquare.innerHTML = currentPlayer
     if (currentPlayer === 'X') { currentPlayer = 'O'} else {currentPlayer = 'X'}
   }
@@ -53,11 +57,14 @@ window.onload = function () {
         else if (board[winningCombos[i][0]] === 'X') {
           alert('X wins')
           gameOver = 0
+          break
+        // needs to break out of whole function
         }
         else (board[winningCombos[i][0]] === 'O')
         {
         alert('O wins')
         gameOver = 0
+        break
 
         }
       }
@@ -69,12 +76,16 @@ window.onload = function () {
   }
 
   function boardStatus (boardSquare) {
+    console.log(boardSquare)
+    console.log(boardSquare.id)
     if (gameOver === 1) {
       if (squareOpen(boardSquare)) {
         takeSquare(boardSquare)
       }
       gameStatus()
-      if (mode === 'skynet') { skynet()}
+      if (mode === 'skynet') { skynet()} // maybe no paranthethese 
     }
   }
-}
+} // ask Kenrick about how best to write and configure this- should it all be in the onload function it does not seem as
+// elegant but I don't know how to reorganize it and I'm at a loss of what to do, I caould also wrap this in a function
+// that is called form a script tag in html or should it be in classes
