@@ -5,6 +5,8 @@ window.addEventListener("load", function load(event){
 },false)
 */
 
+// maybe refactor with ternary operators 
+
 window.onload = function () {
   let gameOver = 1
   let board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -50,31 +52,31 @@ window.onload = function () {
     if (currentPlayer === 'X') { currentPlayer = 'O'} else {currentPlayer = 'X'}
   }
   function skynet () {
-    // min-max 
-    // calls takeSquare
-    // if the board is full call results function maybe 
+    // base case is that there is a winner.
+    // otherwise find all the open possible spaces and call again with the player switched
+    // return a value
+    // things to possibly return include array of moves and end result 
+    // I don't know how to call them which each is evaluated 
+    // the first function to make a call will be nothing but a simple if, else, the if will evaluate if it ended and then have a best move variable 
+    // that resolves if this was the best option
   }
-  function gameStatus () {
+  function gameStatus (virtualBoard = board) {
     for (let i = 0; i < winningCombos.length; i++) {
-      if (board[winningCombos[i][0]] === board[winningCombos[i][1]] && board[winningCombos[i][0]] === board[winningCombos[i][2]]) {
-        if (board[winningCombos[i][0]] === 0) {break}
-        else if (board[winningCombos[i][0]] === 'X') {
-          alert('X wins')
+      if (virtualBoard[winningCombos[i][0]] === virtualBoard[winningCombos[i][1]] && virtualBoard[winningCombos[i][0]] === virtualBoard[winningCombos[i][2]]) {
+        if (virtualBoard[winningCombos[i][0]] === 0) {break}
+        else if (virtualBoard[winningCombos[i][0]] === 'X') {
           gameOver = 0
           break
         // needs to break out of whole function
         }
-        else (board[winningCombos[i][0]] === 'O')
+        else (virtualBoard[winningCombos[i][0]] === 'O')
         {
-        alert('O wins')
         gameOver = 0
         break
-
         }
       }
     }
-    if (!board.some(k => k === 0)) {
-      alert('tie')
+    if (!virtualBoard.some(k => k === 0)) {
       gameOver = 0
     }
   }
