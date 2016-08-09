@@ -52,35 +52,50 @@ window.onload = function () {
     if (currentPlayer === 'X') { currentPlayer = 'O'} else {currentPlayer = 'X'}
   }
  
-    function ai(viBoard, player, alpha, beta, depth){
-      // i need the part of this code that delas with the returned values
-      //when we call the next level of recursion is will be equal to something that uses thesew values to evaluate
-      //whether it is the best possible option
-//       if (gameStatus(viBoard) !== 1){
-//         if (gameOver === 'tie'){
-//           return 0, move
-//         } //return move
-//           else if (gameOver === 'X'){
-//             return -10, depth// return alpha value
-//           }
-//             else if (gameOver === 'O'){
-//               return 10, depth
-//             }
-//       }
-      //all this return shit needs to only apply to terminal nodes
+    function ai(viBoard, player, alpha, beta, moves){
+      if (gameStatus(viBoard) !== 1){
+        if (gameOver === 'tie'){
+          return 0, moves 
+        } 
+        else if (gameOver === 'X'){
+            return -10 + moves.length, moves
+        }
+        else if (gameOver === 'O'){
+            return 10 - moves.length, moves
+        }
+      }
+      
       for (let h= 0; h < viBoard.length; h++){
           if (viBoard[h] === 0){
-          if (player=='X'){
+          if (player=='O'){
             viBoard[h] = player
+            moves.push(h)
             player = togglePlayer(player)
-            let v = ai(viBoard, player, alpha, beta, depth)
-            //do some calculation to determine what's going on with v
+            let bestmove = 0
+            let v = alpha 
+            if (v > beta){
+              let result = ai(viBoard, player, v, beta, moves)
+              if (result[0] > alpha){ 
+                alpha = result[0]
+                bestmove = result[1]
+                
+              }
+      
             }
-          else if (player == 'O'){
+
+          else if (player == 'X'){
             viBoard[h] = player
+            moves.push(h)
             player = togglePlayer(player)
-            let v = ai(viBoard, player, alpha, beta, depth)
-        }
+            let bestmove = 0
+            let v = beta
+            if (v > alpha){
+              let result = ai(viBoard, player, alpha, v, moves)
+              if (result[0] > beta){ 
+                beta = result[0]
+                bestmove = result[1]
+        //return best move after all this for the final recursive turn
+         }
       }
     }
   //check win conditon, return a score from depth, and win and set eqial to max on your move or min on other persons move, if there can be no grater max then leave loop, I need to look at the alpha beta loop to understand this part more fully, otherwise I just need to streamline my win solution part and pass around playuer and borad rather than having them be global. skynet mostly calls recursice call, I think I can do this easily
