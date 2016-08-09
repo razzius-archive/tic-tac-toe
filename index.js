@@ -51,13 +51,46 @@ window.onload = function () {
     boardSquare.innerHTML = currentPlayer
     if (currentPlayer === 'X') { currentPlayer = 'O'} else {currentPlayer = 'X'}
   }
-  function skynet () {
+ 
+    function ai(viBoard, player, alpha, beta, depth){
+      // i need the part of this code that delas with the returned values
+      //when we call the next level of recursion is will be equal to something that uses thesew values to evaluate
+      //whether it is the best possible option
+//       if (gameStatus(viBoard) !== 1){
+//         if (gameOver === 'tie'){
+//           return 0, move
+//         } //return move
+//           else if (gameOver === 'X'){
+//             return -10, depth// return alpha value
+//           }
+//             else if (gameOver === 'O'){
+//               return 10, depth
+//             }
+//       }
+      //all this return shit needs to only apply to terminal nodes
+      for (let h= 0; h < viBoard.length; h++){
+          if (viBoard[h] === 0){
+          if (player=='X'){
+            viBoard[h] = player
+            player = togglePlayer(player)
+            let v = ai(viBoard, player, alpha, beta, depth)
+            //do some calculation to determine what's going on with v
+            }
+          else if (player == 'O'){
+            viBoard[h] = player
+            player = togglePlayer(player)
+            let v = ai(viBoard, player, alpha, beta, depth)
+        }
+      }
+    }
+  //check win conditon, return a score from depth, and win and set eqial to max on your move or min on other persons move, if there can be no grater max then leave loop, I need to look at the alpha beta loop to understand this part more fully, otherwise I just need to streamline my win solution part and pass around playuer and borad rather than having them be global. skynet mostly calls recursice call, I think I can do this easily
+  //----------
     // base case is that there is a winner.
     // otherwise find all the open possible spaces and call again with the player switched
     // return a value
-    // things to possibly return include array of moves and end result 
-    // I don't know how to call them which each is evaluated 
-    // the first function to make a call will be nothing but a simple if, else, the if will evaluate if it ended and then have a best move variable 
+    // things to possibly return include array of moves and end result
+    // I don't know how to call them which each is evaluated
+    // the first function to make a call will be nothing but a simple if, else, the if will evaluate if it ended and then have a best move variable
     // that resolves if this was the best option
   }
   function gameStatus (virtualBoard = board) {
@@ -65,21 +98,22 @@ window.onload = function () {
       if (virtualBoard[winningCombos[i][0]] === virtualBoard[winningCombos[i][1]] && virtualBoard[winningCombos[i][0]] === virtualBoard[winningCombos[i][2]]) {
         if (virtualBoard[winningCombos[i][0]] === 0) {break}
         else if (virtualBoard[winningCombos[i][0]] === 'X') {
-          gameOver = 0
-          break
+          return gameOver = 'X'
+
         // needs to break out of whole function
         }
         else (virtualBoard[winningCombos[i][0]] === 'O')
         {
-        gameOver = 0
-        break
+        return gameOver = 'O'
+
         }
       }
     }
     if (!virtualBoard.some(k => k === 0)) {
-      gameOver = 0
+      return gameOver = 'tie'
     }
   }
+
 
   function boardStatus (boardSquare) {
     if (gameOver === 1) {
