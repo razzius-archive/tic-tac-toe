@@ -78,6 +78,8 @@ window.onload = function () {
               if (result[0] > alpha){ 
                 alpha = result[0]
                 bestmove = result[1]
+                //there should be a return call in here for all the moment's that won't otherwise return where they are passing up
+                //a move and an alpha beta score or something
                 
               }
       
@@ -94,7 +96,7 @@ window.onload = function () {
               if (result[0] > beta){ 
                 beta = result[0]
                 bestmove = result[1]
-        //return best move after all this for the final recursive turn
+        //return best move after all this for the final recursive turn// no
          }
       }
     }
