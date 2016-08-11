@@ -27,7 +27,7 @@ window.onload = function () {
   function toggleMode () {
     if (button.innerHTML === 'Fight Skynet') {
       mode = 'skynet'
-      button.innerHTML = 'Fight Human'
+      button.innerHTML = 'Fight Human' //innerHTML needs to be changed to .textContent
     } else {
       mode = 'human'
       button.innerHTML = 'Fight Skynet'
