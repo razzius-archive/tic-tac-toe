@@ -1,17 +1,18 @@
 {
   "name": "tic-tac-toe",
   "version": "1.0.0",
-  "description": "",
+  "description": "A js tic-tac-toe implementation with artificial intelligence powered by minimax and alpha-beta pruning ",
   "main": "index.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "webpack-dev-server --host 0.0.0.0 --port 80",
+    "prod": "webpack -p"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nohman20/tic-tac-toe.git"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/nohman20/tic-tac-toe/issues"
   },
@@ -19,6 +20,8 @@
   "devDependencies": {
     "babel-core": "^6.13.2",
     "babel-loader": "^6.2.5",
+    "babel-preset-es2015": "^6.13.2",
+    "html-webpack-plugin": "^2.22.0",
     "webpack": "^1.13.2",
     "webpack-dev-server": "^1.14.1"
   }
