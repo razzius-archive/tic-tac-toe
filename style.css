@@ -1,4 +1,13 @@
+body{
+    background-color: #ffffcc;
+    box-sizing: border-box;
+    
+}
+#mainContainer{}
+#header{}
 
+#title{}
+#gameStatus{}
 
 td{
   margin-left: auto;
@@ -9,7 +18,7 @@ td{
   /*min-height: 100px;*/
 }
 table{
-	background-color: orange;
+	border: dotted black 1px;
 	height: 100%;
  	width: 100%;
 }
