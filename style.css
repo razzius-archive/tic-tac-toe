@@ -1,26 +1,46 @@
 body{
-    background-color: #ffffcc;
-    box-sizing: border-box;
+    background-color: #ffffcc !important;
+    /*box-sizing: border-box;*/
+
+
     
 }
-#mainContainer{}
-#header{}
+#mainContainer{
+    text-align: center;
+    width: 80%;
+    margin: 0 auto;
+    position: relative;
+  /*margin: 0px 0 0 -5%; */
+  /*left: 50%;*/
+}
+
+
+#header{
+     
+}
 
 #title{}
-#gameStatus{}
+#gameStatus{
+       
+}
 
 td{
-  margin-left: auto;
-  margin-right: auto;
-  background-color: green;
-  height: 30px;
-  width: 30px;
-  /*min-height: 100px;*/
+    
+
+  background-color: #ffffcc;
+border: dotted black 5px;
+
+    width: 100px;
+    height: 100px;
 }
+
+
 table{
-	border: dotted black 1px;
-	height: 100%;
- 	width: 100%;
+    margin: 0 auto;
+    table-layout: fixed;
+    border-collapse: collapse;
+
+
 }
 
 /* Extra small devices (phones, less than 768px) */
