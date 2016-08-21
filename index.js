@@ -4,37 +4,40 @@ window.addEventListener("load", function load(event){
     myExtension.init();  
 },false)
 */
- window.onload= function doThis(){
-  console.log('this worked')
-  
-}
-
 window.onload = function (){
+  
+function intializeVariables(){
   var gameOver = 1
   var board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
   var currentPlayer = 'X'
   var winningCombos = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 4, 8], [2, 4, 6], [0, 3, 6], [1, 4, 7], [2, 5, 8]]
   var mode = 'human'
-  let table = Array.from(document.getElementsByTagName('TD'))
 
+}
+
+function addListeners(){
+
+  let table = Array.from(document.getElementsByTagName('TD'))
+  
   let button = document.getElementById('mode')
   button.addEventListener('click', toggleMode)
-
   document.getElementById('restart').addEventListener('click', initializeVariables)
-
   table.forEach(function (element) {
     element.addEventListener('click', function () { boardStatus(element) }, false)
   })
+  
+  // table.addEventListener('click', function (){boardStatus(event.target)}, false)
+}
 
-  function toggleMode () {
-    if (button.innerHTML === 'Fight Skynet') {
-      mode = 'skynet'
-      button.innerHTML = 'Fight Human' //innerHTML needs to be changed to .textContent
-    } else {
-      mode = 'human'
-      button.innerHTML = 'Fight Skynet'
-    }
+function toggleMode () {
+  if (button.innerHTML === 'Fight Skynet') {
+    mode = 'skynet'
+    button.innerHTML = 'Fight Human' //innerHTML needs to be changed to .textContent
+  } else {
+    mode = 'human'
+    button.innerHTML = 'Fight Skynet'
   }
+}
 
 
   function initializeVariables () {
@@ -45,6 +48,7 @@ window.onload = function (){
   }
 
   function squareOpen (square) {
+    //do I need to stop propogation once I implement better addLIstener function
     if (board[square.id] === 0) {return true}
     return false
   }
@@ -54,8 +58,10 @@ window.onload = function (){
     boardSquare.innerHTML = currentPlayer
     if (currentPlayer === 'X') { currentPlayer = 'O'} else {currentPlayer = 'X'}
   }
+  
+  
  
-    function ai(viBoard, player, alpha, beta, moves){
+    function ai(viBoard= board, player= currentPlayer, alpha = -1000, beta = 1000, moves = []){
       if (gameStatus(viBoard) !== 1){
         if (gameOver === 'tie'){
           return 0, moves 
