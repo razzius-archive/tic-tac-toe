@@ -144,11 +144,11 @@ function toggleMode () {
       gameStatus()
       if (mode === 'skynet') { skynet } 
     }
-  }/*
-  http://stackoverflow.com/questions/29163097/passing-javascript-string-var-to-html-href-tag
-    var gameOver = 1,
+  }
+  
+  /*  var gameOver = 1,
   board = [0, 0, 0, 0, 0, 0, 0, 0, 0],
-  currentPlayer = 'X',
+  currentPlayer = 'O',
   winningCombos = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 4, 8], [2, 4, 6], [0, 3, 6], [1, 4, 7], [2, 5, 8]],
   mode = 'human';
    
@@ -158,71 +158,73 @@ function toggleMode () {
     for (let i = 0; i < winningCombos.length; i++) {
       if (virtualBoard[winningCombos[i][0]] === virtualBoard[winningCombos[i][1]] && virtualBoard[winningCombos[i][0]] === virtualBoard[winningCombos[i][2]]) 
       {
-        console.log(virtualBoard[0]);
-        console.log(winningCombos[i][0]);
         if (virtualBoard[winningCombos[i][0]] === 0) {break;}
         else if (virtualBoard[winningCombos[i][0]] === 'X') 
         {
           	return gameOver = 'X';
-          	//could also return the answer
-            //return gameOver;
         }
         else if(virtualBoard[winningCombos[i][0]] === 'O')
         {
         	gameOver = 'O';
             return gameOver;
-
         }
       }
     }
     if (!virtualBoard.some(k => k === 0)) {
       	gameOver = 'tie';
-        return gameOver;
-       
+        return gameOver;  
     }
   };
+
 
  function togglePlayer(player = currentPlayer){
    if (player === 'X'){ return 'O';}
    else {return 'X';}
  }
 
+
  var ai = function ai(viBoard = board, player = currentPlayer, alpha = -1000, beta = 1000, moves = []){
-      if (gameStatus(viBoard) !== 1){
-        if (gameOver === 'tie'){
-          return 0, moves; 
-        } 
-        else if (gameOver === 'X'){
+    switch(gameStatus(viBoard)) {
+        case 'X':
             return -10 + moves.length, moves;
-        }
-        else if (gameOver === 'O'){
+        case 'O':
             return 10 - moves.length, moves;
-        }
-      }
+        case 'tie':
+            return 0, moves;
+    }
       
       for (let h= 0; h < viBoard.length; h++){
+          console.log("Currently on iteration: " + h);
+          console.log("viBoard State: " + viBoard);
+          console.log("Value of h: " + h);
+          
           if (viBoard[h] === 0){
+            
           	if (player=='O'){
+                console.log('got to player 0');
             	viBoard[h] = player;
             	moves.push(h);
             	player = togglePlayer(player);
+         
             	let bestmove = 0;
             	let v = alpha; 
-              console.log('first' + alpha);
+                console.log('first' + alpha);
             	if (v > beta){
               		let result = ai(viBoard, player, v, beta, moves);
               		console.log('result:' + result);
                   	if (result[0] > alpha){ 
                 		alpha = result[0];
                 		bestmove = result[1];
-                //there should be a return call in here for all the moment's that won't otherwise return where they are passing up
-                //a move and an alpha beta score or something
-              }
-              }
-          }
+                    }
+              
             }
-
-          else if (player == 'X'){
+          
+            
+      
+    	console.log('current player : ' + player);
+        console.log(" "); // this string has a special char in it ;)
+      }else if (player === 'X'){
+      
             viBoard[h] = player;
             moves.push(h);
             player = togglePlayer(player);
@@ -236,6 +238,7 @@ function toggleMode () {
         //return best move after all this for the final recursive turn// no
               }
             }
+          }
           }
     }//eoforloop
 
