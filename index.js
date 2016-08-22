@@ -5,7 +5,7 @@ window.addEventListener("load", function load(event){
 },false)
 */
 window.onload = function (){
-  
+  //split ai into two functions, one just deals with terminal node and makes call, the other deals with returns?
 function intializeVariables(){
   var gameOver = 1
   var board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
