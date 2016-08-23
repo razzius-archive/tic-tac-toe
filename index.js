@@ -146,7 +146,7 @@ function toggleMode () {
     }
   }
   
-  /*    var gameOver = 1,
+  /*   var gameOver = 1,
   board = [0, 0, 0, 0, 0, 0, 0, 0, 0],
   currentPlayer = 'O',
   winningCombos = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 4, 8], [2, 4, 6], [0, 3, 6], [1, 4, 7], [2, 5, 8]],
@@ -162,7 +162,8 @@ function toggleMode () {
         else if (virtualBoard[winningCombos[i][0]] === 'X') 
         {
      
-          	return gameOver = 'X';
+          	gameOver = 'X';
+         	return gameOver;
         }
         else if(virtualBoard[winningCombos[i][0]] === 'O')
         {
@@ -203,74 +204,87 @@ function getOpenSquares(viBoard){
     switch(gameStatus(viBoard)) {
         case 'X':
         	console.log('X won ');
-            return -10 + deoth;
+            return depth - 10;
         case 'O':
-        	console.log('Y won ');
-
+        	console.log('O won ');
             return 10 - depth;
         case 'tie':
         	console.log('tie');
             return 0;
     }
    let availableSquares = getOpenSquares(viBoard);
-   let result = [];
+   let result = 0;
+   let move = 0;
    var  bestmove = 0;
-   depth+=1
+   depth+=1;
       
-
+//cannot reset available moves
+   //okay, so everytime ai is called it goes and grabs a new version of availbale moves, maybe 
+   //this is it, in the other guys code he is using node as a freehand for 
+   //library,check my brackets 
+   //node and possible game are different variables in the game 
 
           	if (player=='O'){
               for(let i = 0; i < availableSquares.length; i ++)
               {
-          console.log("Currently on iteration: " + i);
-          console.log("viBoard State: " + viBoard);
-                moves.push(availableSquares[i]);
-            	viBoard[availableSquares[i]] = player;
+                console.log(player + ' interation: ' + i)
+                move = availableSquares[i];
+            	viBoard[move] = player;
                 player = togglePlayer(player);
                
-            	result = ai(viBoard, player, alpha, beta, moves);
-      			viBoard[availableSquares[i]] = 0;
-                moves.pop();
-                  	if (result[0] > alpha){ 
-                		alpha = result[0];
-                      if(result[1].length === 1){//this line will cause probelms
-                		bestmove = result[1];
-                        console.log('we have a best move ' + bestmove);
+            	result = ai(viBoard, player, alpha, beta, depth);
+                debugger;
+      			viBoard[move] = 0;
+
+                  	if (result > alpha){ 
+                		alpha = result;
+                      console.log('alpha' + alpha);
+                     console.log(depth);
+                      if(depth === 1){//this line will cause probelms
+                		bestmove = move;
+                        console.log('we have a best move: ' + bestmove);
                       }
                     }
                     else if (alpha >= beta){
                     	return alpha;
                     }
-                    
-            }
+              }
+            
               return alpha;
 
           
             
       
     	//console.log('current player : ' + player);
-        //console.log(" "); // this string has a special char in it ;)
+        //console.log("Ã¢â‚¬Æ’"); // this string has a special char in it ;)
       }else if (player === 'X'){
-          for(let i = 0; i < availableSquares.length; i ++)
+          for(let i = 0; i < availableSquares.length; i ++) //maybe change to h
               {
-               moves.push(availableSquares[i]);
-            	viBoard[availableSquares[i]] = player;
+                console.log(player + ' interation: ' + i)
+               move = availableSquares[i];
+            	viBoard[move] = player;
                 player = togglePlayer(player);
-            	result = ai(viBoard, player, alpha, beta, moves);
-            	viBoard[availableSquares[i]] = 0;
-             	moves.pop() 
-             if (result[0] < beta){ 
-                beta = result[0];
-                if(result[1].length === 1){
-                  bestmove = result[1];
+     
+            	result = ai(viBoard, player, alpha, beta, depth);
+                debugger;
+            	viBoard[move] = 0;
+             	
+             if (result < beta){ 
+                beta = result;
+               console.log('beta' + beta);
+               console.log(depth);
+                if(depth === 1){
+                  bestmove = move;
                 }
               }
                 else if (beta <=alpha){
                   return beta;
             }
           }
-          
+      return beta;
+        
       }
+      
 
   };//eofunction
   
