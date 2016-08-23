@@ -1,17 +1,15 @@
-/*
-window.addEventListener("load", function load(event){
-    window.removeEventListener("load", load, false); //remove listener, no longer needed
-    myExtension.init();  
-},false)
-*/
 window.onload = function (){
-  //split ai into two functions, one just deals with terminal node and makes call, the other deals with returns?
+  intializeVariables;
+  addListeners
+}
+
 function intializeVariables(){
   var gameOver = 1
   var board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
   var currentPlayer = 'X'
   var winningCombos = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 4, 8], [2, 4, 6], [0, 3, 6], [1, 4, 7], [2, 5, 8]]
-  var mode = 'human'
+  var mode = 'human',
+  var bestmove
 
 }
 
@@ -48,7 +46,7 @@ function toggleMode () {
   }
 
   function squareOpen (square) {
-    //do I need to stop propogation once I implement better addLIstener function
+
     if (board[square.id] === 0) {return true}
     return false
   }
@@ -59,101 +57,6 @@ function toggleMode () {
     if (currentPlayer === 'X') { currentPlayer = 'O'} else {currentPlayer = 'X'}
   }
   
-  
- 
-    function ai(viBoard= board, player= currentPlayer, alpha = -1000, beta = 1000, moves = []){
-      if (gameStatus(viBoard) !== 1){
-        if (gameOver === 'tie'){
-          return 0, moves 
-        } 
-        else if (gameOver === 'X'){
-            return -10 + moves.length, moves
-        }
-        else if (gameOver === 'O'){
-            return 10 - moves.length, moves
-        }
-      }
-      
-      for (let h= 0; h < viBoard.length; h++){
-          if (viBoard[h] === 0){
-          if (player=='O'){
-            viBoard[h] = player
-            moves.push(h)
-            player = togglePlayer(player)
-            let bestmove = 0
-            let v = alpha 
-            if (v > beta){
-              let result = ai(viBoard, player, v, beta, moves)
-              if (result[0] > alpha){ 
-                alpha = result[0]
-                bestmove = result[1]
-                //there should be a return call in here for all the moment's that won't otherwise return where they are passing up
-                //a move and an alpha beta score or something
-              }
-              }
-          }
-            }
-
-          else if (player == 'X'){
-            viBoard[h] = player
-            moves.push(h)
-            player = togglePlayer(player)
-            let bestmove = 0
-            let v = beta
-            if (v > alpha){
-              let result = ai(viBoard, player, alpha, v, moves)
-              if (result[0] > beta){ 
-                beta = result[0]
-                bestmove = result[1]
-        //return best move after all this for the final recursive turn// no
-              }
-            }
-          }
-    }//eoforloop
-
-  }//eofunction
-  
-  
-  function gameStatus (virtualBoard = board) {
-    for (let i = 0; i < winningCombos.length; i++) {
-      if (virtualBoard[winningCombos[i][0]] === virtualBoard[winningCombos[i][1]] && virtualBoard[winningCombos[i][0]] === virtualBoard[winningCombos[i][2]]) {
-        if (virtualBoard[winningCombos[i][0]] === 0) {break}
-        else if (virtualBoard[winningCombos[i][0]] === 'X') {
-          return gameOver = 'X'
-
-        // needs to break out of whole function
-        }
-        else (virtualBoard[winningCombos[i][0]] === 'O')
-        {
-        return gameOver = 'O'
-
-        }
-      }//maybe
-    }
-    if (!virtualBoard.some(k => k === 0)) {
-      return gameOver = 'tie'
-    }
-  }
-
-
-  function boardStatus (boardSquare) {
-    if (gameOver === 1) {
-      if (squareOpen(boardSquare)) {
-        takeSquare(boardSquare)
-      }
-      gameStatus()
-      if (mode === 'skynet') { skynet } 
-    }
-  }
-  
-  /*   var gameOver = 1,
-  board = [0, 0, 0, 0, 0, 0, 0, 0, 0],
-  currentPlayer = 'O',
-  winningCombos = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 4, 8], [2, 4, 6], [0, 3, 6], [1, 4, 7], [2, 5, 8]],
-  mode = 'human';
-   
-
-  
   var gameStatus = function gameStatus (virtualBoard = board) {
     for (let i = 0; i < winningCombos.length; i++) {
       if (virtualBoard[winningCombos[i][0]] === virtualBoard[winningCombos[i][1]] && virtualBoard[winningCombos[i][0]] === virtualBoard[winningCombos[i][2]]) 
@@ -162,54 +65,48 @@ function toggleMode () {
         else if (virtualBoard[winningCombos[i][0]] === 'X') 
         {
      
-          	gameOver = 'X';
-         	return gameOver;
+            gameOver = 'X';
+          return gameOver;
         }
         else if(virtualBoard[winningCombos[i][0]] === 'O')
         {
-        	gameOver = 'O';
+          gameOver = 'O';
             return gameOver;
         }
       }
     }
     if (!virtualBoard.some(k => k === 0)) {
-      	gameOver = 'tie';
+        gameOver = 'tie';
         return gameOver;  
     }
   };
-
-
  function togglePlayer(player = currentPlayer){
    if (player === 'X'){ return 'O';}
    else {return 'X';}
  }
-
 function getOpenSquares(viBoard){
-
   let openSquares = [];
-	for(let i = 0; i < viBoard.length; i ++)
+  for(let i = 0; i < viBoard.length; i ++)
     {
       if (viBoard[i] === 0)
       {
         openSquares.push(i);
       }
     }
-
   return openSquares;
 }
   
  var  bestmove = 0;
-
  var ai = function ai(viBoard = board, player = currentPlayer, alpha = -1000, beta = 1000, depth = 0){
     switch(gameStatus(viBoard)) {
         case 'X':
-        	console.log('X won ');
+          console.log('X won ');
             return depth - 10;
         case 'O':
-        	console.log('O won ');
+          console.log('O won ');
             return 10 - depth;
         case 'tie':
-        	console.log('tie');
+          console.log('tie');
             return 0;
     }
    let availableSquares = getOpenSquares(viBoard);
@@ -223,74 +120,69 @@ function getOpenSquares(viBoard){
    //this is it, in the other guys code he is using node as a freehand for 
    //library,check my brackets 
    //node and possible game are different variables in the game 
-
-          	if (player=='O'){
+            if (player=='O'){
               for(let i = 0; i < availableSquares.length; i ++)
               {
                 console.log(player + ' interation: ' + i)
                 move = availableSquares[i];
-            	viBoard[move] = player;
+              viBoard[move] = player;
                 player = togglePlayer(player);
                
-            	result = ai(viBoard, player, alpha, beta, depth);
+              result = ai(viBoard, player, alpha, beta, depth);
                 debugger;
-      			viBoard[move] = 0;
-
-                  	if (result > alpha){ 
-                		alpha = result;
-                      console.log('alpha' + alpha);
-                     console.log(depth);
-                      if(depth === 1){//this line will cause probelms
-                		bestmove = move;
-                        console.log('we have a best move: ' + bestmove);
+            viBoard[move] = 0;
+            player = togglePlayer(player);
+                    if (result > alpha){ 
+                    alpha = result;
+                      //console.log('alpha' + alpha);
+                    // console.log('depth: ' + depth);
+                      if(depth === 1){
+                    bestmove = move;
+                        //console.log('we have a best move: ' + bestmove);
                       }
                     }
                     else if (alpha >= beta){
-                    	return alpha;
+                      return alpha;
                     }
-              }
-            
+              }  
               return alpha;
-
-          
-            
-      
-    	//console.log('current player : ' + player);
-        //console.log("Ã¢â‚¬Æ’"); // this string has a special char in it ;)
       }else if (player === 'X'){
-          for(let i = 0; i < availableSquares.length; i ++) //maybe change to h
+          for(let i = 0; i < availableSquares.length; i ++) 
               {
-                console.log(player + ' interation: ' + i)
+               // console.log(player + ' interation: ' + i)
                move = availableSquares[i];
-            	viBoard[move] = player;
+              viBoard[move] = player;
                 player = togglePlayer(player);
      
-            	result = ai(viBoard, player, alpha, beta, depth);
-                debugger;
-            	viBoard[move] = 0;
-             	
+              result = ai(viBoard, player, alpha, beta, depth);
+  
+              viBoard[move] = 0;
+              player = togglePlayer(player);
+              
              if (result < beta){ 
                 beta = result;
-               console.log('beta' + beta);
-               console.log(depth);
+               //console.log('beta' + beta);
+               //console.log('depth: ' + depth);
                 if(depth === 1){
                   bestmove = move;
                 }
               }
-                else if (beta <=alpha){
+                else if (beta <= alpha){
                   return beta;
             }
           }
       return beta;
-        
       }
-      
+      //console.log(bestmove)
+  };
 
-  };//eofunction
-  
-//var board1 = ['X','X' , 'X', 0, 0, 0, 0, 0, 0];
-//getOpenSquares(board1);
-ai();
-
-//console.log(gameStatus(board1));
-  
+  function boardStatus (boardSquare) {
+    if (gameOver === 1) {
+      if (squareOpen(boardSquare)) {
+        takeSquare(boardSquare)
+      }
+      gameStatus()
+      if (mode === 'skynet') { ai } 
+    }
+  }
+ 
