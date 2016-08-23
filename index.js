@@ -1,25 +1,24 @@
 window.onload = function (){
-  intializeVariables;
-  addListeners
+  intializeVariables()
+  addListeners()
 }
 
 function intializeVariables(){
-  var gameOver = 1
-  var board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
-  var currentPlayer = 'X'
-  var winningCombos = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 4, 8], [2, 4, 6], [0, 3, 6], [1, 4, 7], [2, 5, 8]]
-  var mode = 'human',
-  var bestmove
 
+  let gameOver = 1,
+  board = [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  currentPlayer = 'X',
+  winningCombos = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 4, 8], [2, 4, 6], [0, 3, 6], [1, 4, 7], [2, 5, 8]],
+  mode = 'human',
+  //table.forEach(function (element) {element.innerHTML = ''}),
+  bestmove = 0;
 }
 
 function addListeners(){
-
   let table = Array.from(document.getElementsByTagName('TD'))
-  
   let button = document.getElementById('mode')
   button.addEventListener('click', toggleMode)
-  document.getElementById('restart').addEventListener('click', initializeVariables)
+  document.getElementById('restart').addEventListener('click', intializeVariables)
   table.forEach(function (element) {
     element.addEventListener('click', function () { boardStatus(element) }, false)
   })
@@ -28,62 +27,57 @@ function addListeners(){
 }
 
 function toggleMode () {
-  if (button.innerHTML === 'Fight Skynet') {
-    mode = 'skynet'
+  if (button.innerHTML === 'Fight Computer') {
+    mode = 'computer'
     button.innerHTML = 'Fight Human' //innerHTML needs to be changed to .textContent
   } else {
     mode = 'human'
-    button.innerHTML = 'Fight Skynet'
+    button.innerHTML = 'Fight Computer'
   }
 }
 
+function togglePlayer(player = currentPlayer){
+ if (player === 'X'){ return 'O';}
+ else {return 'X';}
+}
 
-  function initializeVariables () {
-    gameOver = 1
-    board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
-    currentPlayer = 'X'
-    table.forEach(function (element) {element.innerHTML = ''})
-  }
 
-  function squareOpen (square) {
+function squareOpen (square) {
 
-    if (board[square.id] === 0) {return true}
-    return false
-  }
+  if (board[square.id] === 0) {return true}
+  return false
+}
 
-  function takeSquare (boardSquare) {
-    board[boardSquare.id] = currentPlayer
-    boardSquare.innerHTML = currentPlayer
-    if (currentPlayer === 'X') { currentPlayer = 'O'} else {currentPlayer = 'X'}
-  }
+function takeSquare (boardSquare) {
+  board[boardSquare.id] = currentPlayer
+  boardSquare.innerHTML = currentPlayer
+  if (currentPlayer === 'X') { currentPlayer = 'O'} else {currentPlayer = 'X'}
+}
   
-  var gameStatus = function gameStatus (virtualBoard = board) {
-    for (let i = 0; i < winningCombos.length; i++) {
-      if (virtualBoard[winningCombos[i][0]] === virtualBoard[winningCombos[i][1]] && virtualBoard[winningCombos[i][0]] === virtualBoard[winningCombos[i][2]]) 
+var gameStatus = function gameStatus (virtualBoard = board) {
+  for (let i = 0; i < winningCombos.length; i++) {
+    if (virtualBoard[winningCombos[i][0]] === virtualBoard[winningCombos[i][1]] && virtualBoard[winningCombos[i][0]] === virtualBoard[winningCombos[i][2]]) 
+    {
+      if (virtualBoard[winningCombos[i][0]] === 0) {break;}
+      else if (virtualBoard[winningCombos[i][0]] === 'X') 
       {
-        if (virtualBoard[winningCombos[i][0]] === 0) {break;}
-        else if (virtualBoard[winningCombos[i][0]] === 'X') 
-        {
-     
-            gameOver = 'X';
+   
+          gameOver = 'X';
+        return gameOver;
+      }
+      else if(virtualBoard[winningCombos[i][0]] === 'O')
+      {
+        gameOver = 'O';
           return gameOver;
-        }
-        else if(virtualBoard[winningCombos[i][0]] === 'O')
-        {
-          gameOver = 'O';
-            return gameOver;
-        }
       }
     }
-    if (!virtualBoard.some(k => k === 0)) {
-        gameOver = 'tie';
-        return gameOver;  
-    }
-  };
- function togglePlayer(player = currentPlayer){
-   if (player === 'X'){ return 'O';}
-   else {return 'X';}
- }
+  }
+  if (!virtualBoard.some(k => k === 0)) {
+      gameOver = 'tie';
+      return gameOver;  
+  }
+};
+
 function getOpenSquares(viBoard){
   let openSquares = [];
   for(let i = 0; i < viBoard.length; i ++)
@@ -96,7 +90,7 @@ function getOpenSquares(viBoard){
   return openSquares;
 }
   
- var  bestmove = 0;
+
  var ai = function ai(viBoard = board, player = currentPlayer, alpha = -1000, beta = 1000, depth = 0){
     switch(gameStatus(viBoard)) {
         case 'X':
@@ -112,77 +106,74 @@ function getOpenSquares(viBoard){
    let availableSquares = getOpenSquares(viBoard);
    let result = 0;
    let move = 0;
-   var  bestmove = 0;
+   bestmove = 0;
    depth+=1;
       
-//cannot reset available moves
-   //okay, so everytime ai is called it goes and grabs a new version of availbale moves, maybe 
-   //this is it, in the other guys code he is using node as a freehand for 
-   //library,check my brackets 
-   //node and possible game are different variables in the game 
-            if (player=='O'){
-              for(let i = 0; i < availableSquares.length; i ++)
-              {
-                console.log(player + ' interation: ' + i)
-                move = availableSquares[i];
-              viBoard[move] = player;
-                player = togglePlayer(player);
-               
-              result = ai(viBoard, player, alpha, beta, depth);
-                debugger;
+
+          if (player=='O'){
+            for(let i = 0; i < availableSquares.length; i ++)
+            {
+              //console.log(player + ' interation: ' + i)
+              move = availableSquares[i];
+            viBoard[move] = player;
+              player = togglePlayer(player);
+             
+            result = ai(viBoard, player, alpha, beta, depth);
+              debugger;
+          viBoard[move] = 0;
+          player = togglePlayer(player);
+                  if (result > alpha){ 
+                  alpha = result;
+                    //console.log('alpha' + alpha);
+                  // console.log('depth: ' + depth);
+                    if(depth === 1){
+                  bestmove = move;
+                      //console.log('we have a best move: ' + bestmove);
+                    }
+                  }
+                  else if (alpha >= beta){
+                    return alpha;
+                  }
+            }  
+            return alpha;
+    }else if (player === 'X'){
+        for(let i = 0; i < availableSquares.length; i ++) 
+            {
+             // console.log(player + ' interation: ' + i)
+             move = availableSquares[i];
+            viBoard[move] = player;
+              player = togglePlayer(player);
+   
+            result = ai(viBoard, player, alpha, beta, depth);
+
             viBoard[move] = 0;
             player = togglePlayer(player);
-                    if (result > alpha){ 
-                    alpha = result;
-                      //console.log('alpha' + alpha);
-                    // console.log('depth: ' + depth);
-                      if(depth === 1){
-                    bestmove = move;
-                        //console.log('we have a best move: ' + bestmove);
-                      }
-                    }
-                    else if (alpha >= beta){
-                      return alpha;
-                    }
-              }  
-              return alpha;
-      }else if (player === 'X'){
-          for(let i = 0; i < availableSquares.length; i ++) 
-              {
-               // console.log(player + ' interation: ' + i)
-               move = availableSquares[i];
-              viBoard[move] = player;
-                player = togglePlayer(player);
-     
-              result = ai(viBoard, player, alpha, beta, depth);
-  
-              viBoard[move] = 0;
-              player = togglePlayer(player);
-              
-             if (result < beta){ 
-                beta = result;
-               //console.log('beta' + beta);
-               //console.log('depth: ' + depth);
-                if(depth === 1){
-                  bestmove = move;
-                }
+            
+           if (result < beta){ 
+              beta = result;
+             //console.log('beta' + beta);
+             //console.log('depth: ' + depth);
+              if(depth === 1){
+                bestmove = move;
               }
-                else if (beta <= alpha){
-                  return beta;
             }
+              else if (beta <= alpha){
+                return beta;
           }
-      return beta;
-      }
-      //console.log(bestmove)
-  };
-
-  function boardStatus (boardSquare) {
-    if (gameOver === 1) {
-      if (squareOpen(boardSquare)) {
-        takeSquare(boardSquare)
-      }
-      gameStatus()
-      if (mode === 'skynet') { ai } 
+        }
+    return beta;
     }
+    //console.log(bestmove)
+};
+
+function boardStatus (boardSquare) {
+
+  if (gameOver === 1) {
+    if (squareOpen(boardSquare)) {
+      takeSquare(boardSquare)
+    }
+    gameStatus()
+    if (mode === 'computer') { ai } 
   }
+}
  
