@@ -1,60 +1,81 @@
-window.onload = function (){
-  intializeVariables()
-  addListeners()
-}
 
-function intializeVariables(){
+export var App = {
 
-  let gameOver = 1,
-  board = [0, 0, 0, 0, 0, 0, 0, 0, 0],
-  currentPlayer = 'X',
-  winningCombos = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 4, 8], [2, 4, 6], [0, 3, 6], [1, 4, 7], [2, 5, 8]],
-  mode = 'human',
-  //table.forEach(function (element) {element.innerHTML = ''}),
-  bestmove = 0;
-}
+  start: fuction(){
+    intializeVariables()
+    addListeners()
+  },
 
-function addListeners(){
-  let table = Array.from(document.getElementsByTagName('TD'))
-  let button = document.getElementById('mode')
-  button.addEventListener('click', toggleMode)
-  document.getElementById('restart').addEventListener('click', intializeVariables)
-  table.forEach(function (element) {
-    element.addEventListener('click', function () { boardStatus(element) }, false)
-  })
+  intializeVariables: function(){
+    let gameOver = 1,
+    board = [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    currentPlayer = 'X',
+    winningCombos = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 4, 8], [2, 4, 6], [0, 3, 6], [1, 4, 7], [2, 5, 8]],
+    mode = 'human',
+    //table.forEach(function (element) {element.innerHTML = ''}),
+    bestmove = 0;
+  },
+
+  addListeners: function() {
+    let table = Array.from(document.getElementsByTagName('TD'))
+    let button = document.getElementById('mode')
+    button.addEventListener('click', toggleMode)
+    document.getElementById('restart').addEventListener('click', intializeVariables)
+    table.forEach(function (element) {
+      element.addEventListener('click', function () { boardStatus(element) }, false)
   
-  // table.addEventListener('click', function (){boardStatus(event.target)}, false)
-}
+    // table.addEventListener('click', function (){boardStatus(event.target)}, false)
+  },
 
-function toggleMode () {
-  if (button.innerHTML === 'Fight Computer') {
-    mode = 'computer'
-    button.innerHTML = 'Fight Human' //innerHTML needs to be changed to .textContent
-  } else {
-    mode = 'human'
-    button.innerHTML = 'Fight Computer'
-  }
-}
+  toggleMode: function(){
+    if (button.innerHTML === 'Fight Computer') {
+      mode = 'computer'
+      button.innerHTML = 'Fight Human' //innerHTML needs to be changed to .textContent
+    } else {
+      mode = 'human'
+      button.innerHTML = 'Fight Computer'
+    }
+  },
 
-function togglePlayer(player = currentPlayer){
- if (player === 'X'){ return 'O';}
- else {return 'X';}
-}
+  togglePlayer: function(player = currentPlayer){
+    if (player === 'X'){ return 'O';}
+    else {return 'X';}
+  },
 
+  squareOpen: function(square) {
+    if (board[square.id] === 0) {return true}
+    return false
+  }, 
 
-function squareOpen (square) {
-
-  if (board[square.id] === 0) {return true}
-  return false
-}
-
-function takeSquare (boardSquare) {
+  takeSquare: function(boardSquare) {
   board[boardSquare.id] = currentPlayer
   boardSquare.innerHTML = currentPlayer
-  if (currentPlayer === 'X') { currentPlayer = 'O'} else {currentPlayer = 'X'}
-}
-  
-var gameStatus = function gameStatus (virtualBoard = board) {
+  if (currentPlayer === 'X') { currentPlayer = 'O'} 
+    else {currentPlayer = 'X'}
+  },
+
+  getOpenSquares: function(viBoard){
+  let openSquares = [];
+  for(let i = 0; i < viBoard.length; i ++)
+    {
+      if (viBoard[i] === 0)
+      {
+        openSquares.push(i);
+      }
+    }
+  return openSquares;
+  },
+
+  boardStatus: function(boardSquare) {
+  if (gameOver === 1) {
+    if (squareOpen(boardSquare)) {
+      takeSquare(boardSquare)
+    }
+    gameStatus()
+    if (mode === 'computer') { ai } 
+  },
+
+  gameStatus: function(virtualBoard = board) {
   for (let i = 0; i < winningCombos.length; i++) {
     if (virtualBoard[winningCombos[i][0]] === virtualBoard[winningCombos[i][1]] && virtualBoard[winningCombos[i][0]] === virtualBoard[winningCombos[i][2]]) 
     {
@@ -76,22 +97,9 @@ var gameStatus = function gameStatus (virtualBoard = board) {
       gameOver = 'tie';
       return gameOver;  
   }
-};
+  },
 
-function getOpenSquares(viBoard){
-  let openSquares = [];
-  for(let i = 0; i < viBoard.length; i ++)
-    {
-      if (viBoard[i] === 0)
-      {
-        openSquares.push(i);
-      }
-    }
-  return openSquares;
-}
-  
-
- var ai = function ai(viBoard = board, player = currentPlayer, alpha = -1000, beta = 1000, depth = 0){
+  ai: function(viBoard = board, player = currentPlayer, alpha = -1000, beta = 1000, depth = 0){
     switch(gameStatus(viBoard)) {
         case 'X':
           console.log('X won ');
@@ -166,14 +174,10 @@ function getOpenSquares(viBoard){
     //console.log(bestmove)
 };
 
-function boardStatus (boardSquare) {
 
-  if (gameOver === 1) {
-    if (squareOpen(boardSquare)) {
-      takeSquare(boardSquare)
-    }
-    gameStatus()
-    if (mode === 'computer') { ai } 
-  }
-}
+
+
+
+
+
  
