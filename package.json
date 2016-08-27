@@ -4,8 +4,9 @@
   "description": "A js tic-tac-toe implementation with artificial intelligence powered by minimax and alpha-beta pruning ",
   "main": "index.html",
   "scripts": {
-    "start": "webpack-dev-server --host 0.0.0.0 --port 80",
-    "prod": "webpack -p"
+    "start": "webpack-dev-server",
+    "prod": "webpack -p",
+    "build": "webpack"
   },
   "repository": {
     "type": "git",

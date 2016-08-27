@@ -1,7 +1,6 @@
+module.exports = {
 
-export var App = {
-
-  start: fuction(){
+  start: function(){
     intializeVariables()
     addListeners()
   },
@@ -25,6 +24,7 @@ export var App = {
       element.addEventListener('click', function () { boardStatus(element) }, false)
   
     // table.addEventListener('click', function (){boardStatus(event.target)}, false)
+    })
   },
 
   toggleMode: function(){
@@ -73,7 +73,7 @@ export var App = {
     }
     gameStatus()
     if (mode === 'computer') { ai } 
-  },
+  }},
 
   gameStatus: function(virtualBoard = board) {
   for (let i = 0; i < winningCombos.length; i++) {
@@ -172,7 +172,7 @@ export var App = {
     return beta;
     }
     //console.log(bestmove)
-};
+}}//error for bracket
 
 
 
