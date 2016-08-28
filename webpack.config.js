@@ -1,8 +1,10 @@
 module.exports = {
 	entry: './index.js',
 	output: {
+		libraryTarget: 'object',
+		library:'App',
 		path: './dist',
-		filename: './bundle.js'
+		filename: 'bundle.js'
 	},
 	module: {
 		loaders: [

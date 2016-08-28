@@ -1,8 +1,11 @@
+
 module.exports = {
 
   start: function(){
+    console.log('hey')
     intializeVariables()
     addListeners()
+  
   },
 
   intializeVariables: function(){
@@ -172,9 +175,7 @@ module.exports = {
     return beta;
     }
     //console.log(bestmove)
-}}//error for bracket
-
-
+}};//error for bracket
 
 
 
