@@ -1,3 +1,4 @@
+var App =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -46,10 +47,13 @@
 
 	'use strict';
 
-	module.exports = {
+	var App = {
 
 	  start: function start() {
+	    togglePlayer();
+	    console.log('heyg');
 	    intializeVariables();
+
 	    addListeners();
 	  },
 
@@ -247,6 +251,10 @@
 	    }
 	    //console.log(bestmove)
 	  }) }; //error for bracket
+
+	module.exports = App;
+
+	window.onload = App.start;
 
 /***/ }
 /******/ ]);

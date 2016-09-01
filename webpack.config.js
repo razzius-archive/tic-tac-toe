@@ -1,7 +1,9 @@
+require('babel-polyfill');
+
 module.exports = {
 	entry: './index.js',
 	output: {
-		libraryTarget: 'object',
+		libraryTarget: 'var',
 		library:'App',
 		path: './dist',
 		filename: 'bundle.js'

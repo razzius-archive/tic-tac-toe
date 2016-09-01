@@ -1,11 +1,10 @@
-
-module.exports = {
+"use strict";
+const App = {
 
   start: function(){
-    console.log('hey')
     intializeVariables()
     addListeners()
-  
+   
   },
 
   intializeVariables: function(){
@@ -177,7 +176,9 @@ module.exports = {
     //console.log(bestmove)
 }};//error for bracket
 
+module.exports = App
 
+window.onload = App.start;
 
 
 
