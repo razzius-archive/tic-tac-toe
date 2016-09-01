@@ -1,32 +1,35 @@
 "use strict";
-const App = {
+
+function intializeVariables(){
+  let gameOver = 1,
+      board = [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      currentPlayer = 'X',
+      winningCombos = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 4, 8], [2, 4, 6], [0, 3, 6], [1, 4, 7], [2, 5, 8]],
+      mode = 'human',
+      //table.forEach(function (element) {element.innerHTML = ''}),
+      bestmove = 0;
+}
+
+function addListeners() {
+  let table = Array.from(document.getElementsByTagName('TD'))
+  let button = document.getElementById('mode')
+  button.addEventListener('click', toggleMode)
+  document.getElementById('restart').addEventListener('click', intializeVariables)
+  table.forEach(function (element) {
+    element.addEventListener('click', function () { boardStatus(element) }, false)
+
+    // table.addEventListener('click', function (){boardStatus(event.target)}, false)
+  })
+}
+
+module.exports = {
 
   start: function(){
+    console.log('start!')
+
     intializeVariables()
     addListeners()
-   
-  },
 
-  intializeVariables: function(){
-    let gameOver = 1,
-    board = [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    currentPlayer = 'X',
-    winningCombos = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 4, 8], [2, 4, 6], [0, 3, 6], [1, 4, 7], [2, 5, 8]],
-    mode = 'human',
-    //table.forEach(function (element) {element.innerHTML = ''}),
-    bestmove = 0;
-  },
-
-  addListeners: function() {
-    let table = Array.from(document.getElementsByTagName('TD'))
-    let button = document.getElementById('mode')
-    button.addEventListener('click', toggleMode)
-    document.getElementById('restart').addEventListener('click', intializeVariables)
-    table.forEach(function (element) {
-      element.addEventListener('click', function () { boardStatus(element) }, false)
-  
-    // table.addEventListener('click', function (){boardStatus(event.target)}, false)
-    })
   },
 
   toggleMode: function(){
@@ -47,12 +50,12 @@ const App = {
   squareOpen: function(square) {
     if (board[square.id] === 0) {return true}
     return false
-  }, 
+  },
 
   takeSquare: function(boardSquare) {
   board[boardSquare.id] = currentPlayer
   boardSquare.innerHTML = currentPlayer
-  if (currentPlayer === 'X') { currentPlayer = 'O'} 
+  if (currentPlayer === 'X') { currentPlayer = 'O'}
     else {currentPlayer = 'X'}
   },
 
@@ -74,17 +77,17 @@ const App = {
       takeSquare(boardSquare)
     }
     gameStatus()
-    if (mode === 'computer') { ai } 
+    if (mode === 'computer') { ai }
   }},
 
   gameStatus: function(virtualBoard = board) {
   for (let i = 0; i < winningCombos.length; i++) {
-    if (virtualBoard[winningCombos[i][0]] === virtualBoard[winningCombos[i][1]] && virtualBoard[winningCombos[i][0]] === virtualBoard[winningCombos[i][2]]) 
+    if (virtualBoard[winningCombos[i][0]] === virtualBoard[winningCombos[i][1]] && virtualBoard[winningCombos[i][0]] === virtualBoard[winningCombos[i][2]])
     {
       if (virtualBoard[winningCombos[i][0]] === 0) {break;}
-      else if (virtualBoard[winningCombos[i][0]] === 'X') 
+      else if (virtualBoard[winningCombos[i][0]] === 'X')
       {
-   
+
           gameOver = 'X';
         return gameOver;
       }
@@ -97,7 +100,7 @@ const App = {
   }
   if (!virtualBoard.some(k => k === 0)) {
       gameOver = 'tie';
-      return gameOver;  
+      return gameOver;
   }
   },
 
@@ -118,7 +121,7 @@ const App = {
    let move = 0;
    bestmove = 0;
    depth+=1;
-      
+
 
           if (player=='O'){
             for(let i = 0; i < availableSquares.length; i ++)
@@ -127,12 +130,12 @@ const App = {
               move = availableSquares[i];
             viBoard[move] = player;
               player = togglePlayer(player);
-             
+
             result = ai(viBoard, player, alpha, beta, depth);
               debugger;
           viBoard[move] = 0;
           player = togglePlayer(player);
-                  if (result > alpha){ 
+                  if (result > alpha){
                   alpha = result;
                     //console.log('alpha' + alpha);
                   // console.log('depth: ' + depth);
@@ -144,22 +147,22 @@ const App = {
                   else if (alpha >= beta){
                     return alpha;
                   }
-            }  
+            }
             return alpha;
     }else if (player === 'X'){
-        for(let i = 0; i < availableSquares.length; i ++) 
+        for(let i = 0; i < availableSquares.length; i ++)
             {
              // console.log(player + ' interation: ' + i)
              move = availableSquares[i];
             viBoard[move] = player;
               player = togglePlayer(player);
-   
+
             result = ai(viBoard, player, alpha, beta, depth);
 
             viBoard[move] = 0;
             player = togglePlayer(player);
-            
-           if (result < beta){ 
+
+           if (result < beta){
               beta = result;
              //console.log('beta' + beta);
              //console.log('depth: ' + depth);
@@ -176,10 +179,6 @@ const App = {
     //console.log(bestmove)
 }};//error for bracket
 
-module.exports = App
+// module.exports = App
 
-window.onload = App.start;
-
-
-
- 
+// window.onload = App.start;
